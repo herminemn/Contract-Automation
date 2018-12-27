@@ -1,0 +1,33 @@
+{% block content %}
+
+<h2>Uploaded Documents</h2>
+<form action="{% url 'upload_file' %}">
+    <input type="submit" value="Upload Template">
+</form>
+<br />
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Template</th>
+        <th>Make Changes</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for uploaded_file in uploaded_files %}
+        <tr>
+            <td>{{ uploaded_file.title }}</td>
+            <td>{{ uploaded_file.agreement }}</td>
+            <td>
+                <form method="post" action="{% url 'delete_file' uploaded_file.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
