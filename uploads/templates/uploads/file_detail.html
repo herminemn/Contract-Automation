@@ -1,0 +1,18 @@
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {% if variables %}
+        {% for variable in variables %}
+            {% for var in variable %}
+                {{ var }} <br /><input type="text", name="statement">
+                <br />
+                <br />
+            {% endfor %}
+        {% endfor %}
+        <input type="submit" value="Download">
+    {% endif %}
+</form>
+
+
+{% endblock %}

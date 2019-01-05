@@ -9,21 +9,34 @@
 <table class="table">
     <thead>
     <tr>
+        <th>ID</th>
         <th>Template</th>
         <th>Make Changes</th>
         <th>Delete</th>
+        <th>Download</th>
     </tr>
     </thead>
     <tbody>
     {% for uploaded_file in uploaded_files %}
         <tr>
+            <td>{{ uploaded_file.id }}</td>
             <td>{{ uploaded_file.title }}</td>
-            <td>{{ uploaded_file.agreement }}</td>
+            <td>
+                <form method="post" action="{% url 'edit_file' uploaded_file.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Edit</button>
+                </form>
+            </td>
             <td>
                 <form method="post" action="{% url 'delete_file' uploaded_file.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
+            </td>
+            <td>
+                <a href="{{ uploaded_file.agreement.url }}" class="btn btn-primary btn-sm" target="_blank">
+                    Donwload
+                </a>
             </td>
         </tr>
     {% endfor %}
