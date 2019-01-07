@@ -1,11 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UploadFileForm
+from .forms import UploadFileForm, EditFileForm
 from .models import DocFile
-from django.core.files import File
 from docx import Document
-import docx
 import re
-import io
 
 
 def files_list(request):
@@ -40,10 +37,17 @@ def edit_file(request, upload_id):
             for cell in row.cells:
                 match = re.findall(r"\{(.*?)\}", cell.text)
                 variables.append(match)
+    if request.method == 'POST':
+        input_text = EditFileForm(data=request.POST)
+        if input_text.is_valid():
+            print(input_text.cleaned_data['text'])
+    else:
+        input_text = EditFileForm()
     document.save('blue.pdf')
     return render(request, 'uploads/file_detail.html', {
-        'variables': variables
+        'variables': variables, 'input_text': input_text
     })
+
 
 
 def delete_file(request, pk):

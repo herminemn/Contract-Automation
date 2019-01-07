@@ -1,12 +1,11 @@
 {% block content %}
 
-<form method="post">
+<form action="." method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% if variables %}
         {% for variable in variables %}
             {% for var in variable %}
-                {{ var }} <br /><input type="text", name="statement">
-                <br />
+                {{ var }}. {{ input_text.as_p }}
                 <br />
             {% endfor %}
         {% endfor %}
