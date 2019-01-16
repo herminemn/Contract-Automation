@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UploadFileForm, EditFileForm
-from .models import DocFile
+from django.forms.formsets import formset_factory
+from django.template import RequestContext
+from django.core.exceptions import ValidationError
+from .forms import UploadFileForm, VariablesForm
+from .models import DocFile, VarFields
+from docxtpl import DocxTemplate
 from docx import Document
 import re
 
@@ -28,26 +32,33 @@ def upload_file(request):
 def edit_file(request, upload_id):
     instance = get_object_or_404(DocFile, id=upload_id)
     document = Document(instance.agreement)
+    regex = re.compile(r"\{(.*?)\}")
     variables = []
     for paragraph in document.paragraphs:
-        match = re.findall(r"\{(.*?)\}", paragraph.text)
+        match = re.findall(regex, paragraph.text)
         variables.append(match)
     for table in document.tables:
         for row in table.rows:
             for cell in row.cells:
-                match = re.findall(r"\{(.*?)\}", cell.text)
+                match = re.findall(regex, cell.text)
                 variables.append(match)
+    document.save('test.docx')
+    temp_list = []
+    for variable in variables:
+        for var in variable:
+            if len(var) > 0:
+                temp_list.append(var)
+    variables = temp_list
+    print(variables)
+    inputs_list = []
+    form_field = VariablesForm(variables=variables)
     if request.method == 'POST':
-        input_text = EditFileForm(data=request.POST)
-        if input_text.is_valid():
-            print(input_text.cleaned_data['text'])
-    else:
-        input_text = EditFileForm()
-    document.save('blue.pdf')
-    return render(request, 'uploads/file_detail.html', {
-        'variables': variables, 'input_text': input_text
-    })
+        input_texts = form_field.get_input_text()
+        print(input_texts)
 
+    return render(request, 'uploads/file_detail.html', {
+        'variables': variables, 'form_field': form_field
+    })
 
 
 def delete_file(request, pk):

@@ -10,8 +10,7 @@ urlpatterns = [
     path('', views.files_list, name='files_list'),
     path('upload/', views.upload_file, name='upload_file'),
     path('upload/<int:pk>/', views.delete_file, name='delete_file'),
-    path('template/<int:upload_id>/', views.edit_file, name='edit_file'),
-    path('template/<int:upload_id>/', views.edit_file, name='edit_file'),
+    path('template/<int:upload_id>/edit/', views.edit_file, name='edit_file'),
 ]
 
 if settings.DEBUG:

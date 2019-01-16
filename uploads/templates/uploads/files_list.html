@@ -22,7 +22,7 @@
             <td>{{ uploaded_file.id }}</td>
             <td>{{ uploaded_file.title }}</td>
             <td>
-                <form method="post" action="{% url 'edit_file' uploaded_file.id %}">
+                <form method="post" action="{% url 'edit_file' uploaded_file.id %}" target="_blank">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger btn-sm">Edit</button>
                 </form>

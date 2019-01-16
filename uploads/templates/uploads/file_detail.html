@@ -1,17 +1,19 @@
 {% block content %}
 
+<h3>Fields to Change</h3>
+
 <form action="." method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {% if variables %}
-        {% for variable in variables %}
-            {% for var in variable %}
-                {{ var }}. {{ input_text.as_p }}
-                <br />
-            {% endfor %}
+        {% for field in form_field %}
+            {{ field.label_tag }}
+            <br/>
+            {{ field }}
+            <br />
+            <br />
         {% endfor %}
-        <input type="submit" value="Download">
-    {% endif %}
-</form>
 
+    <br />
+    <input type="submit" value="Save">
+</form>
 
 {% endblock %}
