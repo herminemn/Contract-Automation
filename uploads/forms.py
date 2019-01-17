@@ -23,4 +23,4 @@ class VariablesForm(forms.Form):
     def get_input_text(self):
         for name, value in self.cleaned_data.items():
             if name.startswith('custom_'):
-                yield (value)
+                yield (self.fields[name].label, value)

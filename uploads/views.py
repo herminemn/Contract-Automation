@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.forms.formsets import formset_factory
-from django.template import RequestContext
 from django.core.exceptions import ValidationError
 from .forms import UploadFileForm, VariablesForm
 from .models import DocFile, VarFields
-from docxtpl import DocxTemplate
 from docx import Document
 import re
 
@@ -29,6 +26,20 @@ def upload_file(request):
     })
 
 
+def docx_words_replace(doc_obj, regex, replace):
+    for p in doc_obj.paragraphs:
+        if regex.search(p.text):
+            inline = p.runs
+            for i in range(len(inline)):
+                if regex.search(inline[i].text):
+                    text = regex.sub(replace, inline[i].text)
+                    inline[i].text = text
+    for table in doc_obj.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                docx_words_replace(cell, regex, replace)
+
+
 def edit_file(request, upload_id):
     instance = get_object_or_404(DocFile, id=upload_id)
     document = Document(instance.agreement)
@@ -42,20 +53,35 @@ def edit_file(request, upload_id):
             for cell in row.cells:
                 match = re.findall(regex, cell.text)
                 variables.append(match)
-    document.save('test.docx')
     temp_list = []
     for variable in variables:
         for var in variable:
             if len(var) > 0:
                 temp_list.append(var)
     variables = temp_list
-    print(variables)
+    variables_set = sorted(set(temp_list), key=temp_list.index)
     inputs_list = []
-    form_field = VariablesForm(variables=variables)
+    form_field = VariablesForm(request.POST, variables=variables_set)
     if request.method == 'POST':
+        print(form_field)
         input_texts = form_field.get_input_text()
-        print(input_texts)
-
+        for i, input_text in input_texts:
+            inputs_list.append(input_text)
+    print(inputs_list)
+    my_dict = dict(zip(variables_set, inputs_list))
+    print(my_dict)
+    for word, replacement in my_dict.items():
+        word_re = re.compile(word)
+        docx_words_replace(document, word_re, replacement)
+    regex1 = re.compile(r"{")
+    regex2 = re.compile(r"}")
+    replace = r""
+    docx_words_replace(document, regex1, replace)
+    docx_words_replace(document, regex2, replace)
+    if len(inputs_list) != 0:
+        contract_name = inputs_list[0]
+        print(contract_name)
+        document.save(contract_name + '.docx')
     return render(request, 'uploads/file_detail.html', {
         'variables': variables, 'form_field': form_field
     })
