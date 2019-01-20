@@ -14,6 +14,7 @@
         <th>Make Changes</th>
         <th>Delete</th>
         <th>Download</th>
+        <th>Save as PDF</th>
     </tr>
     </thead>
     <tbody>
@@ -37,6 +38,13 @@
                 <a href="{{ uploaded_file.agreement.url }}" class="btn btn-primary btn-sm" target="_blank">
                     Download
                 </a>
+            </td>
+            <td>
+                <form method="post" action="{% url 'save_as_pdf' uploaded_file.id %}" target="_blank">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Save as PDF</button>
+                </form>
+            </td>
             </td>
         </tr>
     {% endfor %}

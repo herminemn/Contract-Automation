@@ -4,6 +4,9 @@ from .forms import UploadFileForm, VariablesForm
 from .models import DocFile, VarFields
 from docx import Document
 import re
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 
 
 def files_list(request):
@@ -85,6 +88,17 @@ def edit_file(request, upload_id):
     return render(request, 'uploads/file_detail.html', {
         'variables': variables, 'form_field': form_field
     })
+
+
+def save_as_pdf(request, pk):
+    if request.method == 'POST':
+        uploaded_file = DocFile.objects.get(pk=pk)
+        buffer = io.BytesIO(uploaded_file)
+        p = canvas.Canvas(buffer)
+        p.showPage()
+        p.save()
+        return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+    return redirect('files_list')
 
 
 def delete_file(request, pk):
