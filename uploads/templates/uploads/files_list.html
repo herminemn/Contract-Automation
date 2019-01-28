@@ -9,18 +9,15 @@
 <table class="table">
     <thead>
     <tr>
-        <th>ID</th>
         <th>Template</th>
         <th>Make Changes</th>
         <th>Delete</th>
         <th>Download</th>
-        <th>Save as PDF</th>
     </tr>
     </thead>
     <tbody>
     {% for uploaded_file in uploaded_files %}
         <tr>
-            <td>{{ uploaded_file.id }}</td>
             <td>{{ uploaded_file.title }}</td>
             <td>
                 <form method="post" action="{% url 'edit_file' uploaded_file.id %}" target="_blank">
@@ -35,16 +32,10 @@
                 </form>
             </td>
             <td>
-                <a href="{{ uploaded_file.agreement.url }}" class="btn btn-primary btn-sm" target="_blank">
-                    Download
-                </a>
-            </td>
-            <td>
-                <form method="post" action="{% url 'save_as_pdf' uploaded_file.id %}" target="_blank">
+                <form method="post" action="{{ uploaded_file.agreement.url }}" target="_blank">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Save as PDF</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Download</button>
                 </form>
-            </td>
             </td>
         </tr>
     {% endfor %}

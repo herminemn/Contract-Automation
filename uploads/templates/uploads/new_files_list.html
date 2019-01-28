@@ -1,0 +1,36 @@
+{% block content %}
+
+<h2>Edited Agreements</h2>
+<br />
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Agreement</th>
+        <th>Download</th>
+        <th>Delete</th>
+
+    </tr>
+    </thead>
+    <tbody>
+        {% for new_file in new_files %}
+        <tr>
+            <td>{{ new_file }}</td>
+            <td>
+                <form method="post" action="{{ new_file.path }}" target="_blank">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Download</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="{{ new_file }}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

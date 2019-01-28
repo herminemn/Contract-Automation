@@ -4,7 +4,7 @@ from .validators import validate_file_extension
 
 class DocFile(models.Model):
     title = models.CharField(max_length=100)
-    agreement = models.FileField(upload_to='', validators=[validate_file_extension])
+    agreement = models.FileField(upload_to='uploaded_files', validators=[validate_file_extension])
 
     def __str__(self):
         return self.title
