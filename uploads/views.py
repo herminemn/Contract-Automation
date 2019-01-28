@@ -7,6 +7,8 @@ from contractautomation.settings import MEDIA_ROOT
 from docx import Document
 import re
 import os
+from django.core.files import File
+from django.core.files.storage import default_storage
 
 
 def files_list(request):
@@ -89,15 +91,20 @@ def new_files_list(request):
     new_files_list = []
     for file in os.listdir(path):
         if file.endswith('.doc') or file.endswith('.docx'):
-            new_files_list.append(file)
+            new_files_list.append(os.path.basename(file))
+        if file.startswith('8'):
+            print(file)
     return render(request, 'uploads/new_files_list.html', {
         'new_files': new_files_list
     })
 
 
-def delete_new_file(request, path):
+def delete_new_file(request, path, pk):
     if request.method == 'POST':
         file_path = os.path.join(MEDIA_ROOT, path)
         if os.path.exists(file_path):
+
+            print(file_path)
             os.remove(file_path)
     return redirect('new_files_list')
+

@@ -12,7 +12,7 @@ urlpatterns = [
     path('upload/<int:pk>/', views.delete_file, name='delete_file'),
     path('template/<int:upload_id>/edit/', views.edit_file, name='edit_file'),
     path('edited_agreements/', views.new_files_list, name='new_files_list'),
-    path('edited_agreements/', views.delete_new_file, name='delete_new_file'),
+    path('edited_agreements/222222.docx', views.delete_new_file, name='delete_new_file'),
 ]
 
 if settings.DEBUG:
