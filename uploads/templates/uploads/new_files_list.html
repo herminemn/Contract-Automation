@@ -1,40 +1,38 @@
-{% extends 'base.html' %}
+<!--{% extends 'base.html' %}-->
 
-{% block content %}
+<!--{% block content %}-->
 
-<h2>Edited Agreements</h2>
-<br />
+<!--<h2>Edited Agreements</h2>-->
+<!--<br />-->
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>id</th>
-        <th>Agreement</th>
-        <th>Download</th>
-        <th>Delete</th>
+<!--<table class="table">-->
+    <!--<thead>-->
+    <!--<tr>-->
+        <!--<th>Agreement</th>-->
+        <!--<th>Download</th>-->
+        <!--<th>Delete</th>-->
 
-    </tr>
-    </thead>
-    <tbody>
-        {% for new_file in new_files %}
-        <tr>
-            <td>{{ new_file }}</td>
-            <td>{{ new_file }}</td>
-            <td>
-                <form method="post" action="{{ new_file }}" target="_blank">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Download</button>
-                </form>
-            </td>
-            <td>
-                <form method="post" action="{{ object.new_file.url }}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+        <!--{% for new_file in new_files %}-->
+        <!--<tr>-->
+            <!--<td>{{ new_file }}</td>-->
+            <!--<td>-->
+                <!--<form method="post" action="{{ new_file }}" target="_blank">-->
+                    <!--{% csrf_token %}-->
+                    <!--<button type="submit" class="btn btn-danger btn-sm">Download</button>-->
+                <!--</form>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<form method="post" action="{{ new_file }}">-->
+                    <!--{% csrf_token %}-->
+                    <!--<button type="submit" class="btn btn-danger btn-sm">Delete</button>-->
+                <!--</form>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--{% endfor %}-->
+    <!--</tbody>-->
+<!--</table>-->
 
-{% endblock %}
+<!--{% endblock %}-->

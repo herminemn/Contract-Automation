@@ -8,9 +8,6 @@ class UploadFileForm(forms.ModelForm):
         fields = ('title', 'agreement')
 
 
-# class EditFileForm(forms.Form):
-#     text = forms.CharField(label='', required=False)
-
 class VariablesForm(forms.Form):
 
     def __init__(self, *args, **kwargs):

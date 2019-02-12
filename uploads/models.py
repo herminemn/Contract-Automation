@@ -14,5 +14,13 @@ class DocFile(models.Model):
         super().delete(*args, **kwargs)
 
 
+# class NewDocFile(models.Model):
+#     new_agreement = models.ForeignKey('DocFile', on_delete=models.CASCADE)
+# 
+#     def delete(self, *args, **kwargs):
+#         self.new_agreement.delete()
+#         super().delete(*args, **kwargs)
+
+
 class VarFields(models.Model):
     var_fields = models.CharField(max_length=100)
