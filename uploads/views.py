@@ -57,9 +57,8 @@ def edit_file(request, upload_id):
     variables_set = sorted(set(temp_list), key=temp_list.index)
     inputs_list = []
     form_field = VariablesForm(request.POST, variables=variables_set)
-    if request.method == 'POST':
+    if request.method == 'POST' and form_field.is_valid():
         input_texts = form_field.get_input_text()
-        print(form_field)
         for i, input_text in input_texts:
             inputs_list.append(input_text)
     my_dict = dict(zip(variables_set, inputs_list))
@@ -73,7 +72,6 @@ def edit_file(request, upload_id):
     docx_words_replace(document, regex2, replace)
     if len(inputs_list) != 0:
         contract_name = inputs_list[0]
-        print(contract_name)
         file_name = '{}.docx'.format(contract_name)
         desktop = os.path.normpath(os.path.expanduser("~/Desktop"))
         document.save(os.path.join(desktop, file_name))
