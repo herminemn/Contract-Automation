@@ -8,6 +8,7 @@
 </form>
 <br />
 
+{% if uploaded_files %}
 <table class="table">
     <thead>
     <tr>
@@ -43,5 +44,8 @@
     {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p>There are no Uploaded Files</p>
+{% endif %}
 
 {% endblock %}

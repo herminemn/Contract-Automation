@@ -73,9 +73,13 @@ def edit_file(request, upload_id):
     if len(inputs_list) != 0:
         contract_name = inputs_list[0]
         file_name = '{}.docx'.format(contract_name)
-        desktop = os.path.normpath(os.path.expanduser("~/Desktop"))
+        desktop = os.path.normpath(os.path.expanduser("~/Desktop/aca_agreements"))
+        try:
+            os.makedirs(desktop)
+        except FileExistsError:
+            pass
         document.save(os.path.join(desktop, file_name))
-        messages.success(request, 'Saved on Desktop')
+        messages.success(request, 'Saved on Desktop/aca_agreements')
     return render(request, 'uploads/file_detail.html', {
         'variables': variables, 'form_field': form_field
     })
